@@ -1,0 +1,71 @@
+/*
+* Given a word, detect if it uses capitals correctly
+* Either all capital, no capitals, or first letter capital only
+*/
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<locale>
+
+int main() {
+	std::locale loc;
+	std::string input;
+	std::string inputCopy;
+	int result = 0;
+	while (1) {
+		std::cout << " Enter a word. Hit enter to exit. " << std::endl;
+		std::getline(std::cin, input);
+		if (input == "") {
+			break;
+		}
+		
+		// case 1 & 3 capital with first letter
+		if (std::isupper(input[0], loc)) {
+			result = 0;
+			inputCopy = input;
+			// all capital test
+			if (std::isupper(input[1], loc)) {
+				std::transform(inputCopy.begin(), inputCopy.end(), inputCopy.begin(), ::toupper);
+				//XOR both strings to see if everything is the same
+				for (int i = 0; i < input.length(); i++) {
+					result = input[i] ^ inputCopy[i];
+				}
+				if (result == 0) {
+					std::cout << " All are capital." << std::endl;
+				}
+			}
+			// just first lettter
+			else {
+				result = 0;
+				std::transform(inputCopy.begin(), inputCopy.end(), inputCopy.begin(), ::tolower);
+				//XOR both strings to see if everything is the same
+				// since we know the first char will be different in the copy and original
+				// delete the first element of both strings and test them
+				input.erase(input.begin());
+				inputCopy.erase(inputCopy.begin());
+				for (int i = 0; i < input.length(); i++) {
+					result = input[i] ^ inputCopy[i];
+				}
+				if (result == 0) {
+					std::cout << " The first letter is capital only." << std::endl;
+				}
+			}
+		}
+		else {
+			result = 0;
+			inputCopy = input;
+			std::transform(inputCopy.begin(), inputCopy.end(), inputCopy.begin(), ::tolower);
+			for (int i = 0; i < input.length(); i++) {
+				result = input[i] ^ inputCopy[i];
+			}
+			if (result == 0) {
+				std::cout << " All the letters are lowercase. " << std::endl;
+			}
+		}
+		if (result != 0) {
+			std::cout << "The word did not fit any criteria for capitals." << std::endl;
+		}
+	}
+
+	return 0;
+}
