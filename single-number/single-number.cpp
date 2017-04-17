@@ -1,7 +1,6 @@
 /*
 Given an array of integers, each element appears twice except for one, find that one.
 */
-#include<string>
 #include<iostream>
 #include<vector>
 
